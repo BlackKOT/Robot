@@ -1,9 +1,9 @@
 class Robot
 
-  # свойства объекта: x,y,face,field
+  # properties: x,y,face,field
   attr_accessor :x_place, :y_place, :face, :field
 
-  # хеш со смещениями по полю для сторон света
+  # hash with move directions for cardinal direction
   COMPASS = {'NORTH' => {:x => 0, :y => 1},
              'EAST' => {:x => 1, :y => 0},
              'SOUTH' => {:x => 0, :y => -1},
@@ -14,37 +14,37 @@ class Robot
     @field = field
   end
 
-  def place(x, y, f) # метод размещения объекта
-    if @field.inbound?(x, y) && COMPASS.keys.include?(f) # если объект попадает в поле и массив сторон света включает фейс
+  def place(x, y, f) # placing object method
+    if @field.inbound?(x, y) && COMPASS.keys.include?(f) # if object is on field and cardinal array includes face
       @x_place = x
       @y_place = y
       @face = f
     end
   end
 
-  def placed? # метод-проверка: размещен ли объект, доступен извне, как вспомагательный
+  def placed? # method for checking: true if the object is placed. (public access for informative)
     @x_place && @face
   end
 
-  def move # метод для перемещения обьекта
-    place(@x_place + COMPASS[@face][:x], @y_place + COMPASS[@face][:y], @face) if placed? # пробуем переместить обьект
+  def move # method for moving object
+    place(@x_place + COMPASS[@face][:x], @y_place + COMPASS[@face][:y], @face) if placed? # try to move object
   end
 
-  def left # метод для поворота объекта налево
+  def left # method for left rotate object
     rotate(:angle => -1) if placed?
   end
 
-  def right # метод для поворота объекта направо
+  def right # method for right rotate object
     rotate(:angle => 1) if placed?
   end
 
-  def report # метод для вывода отчета
+  def report # method for report output
     puts "Output: #{@x_place},#{@y_place},#{@face}" if placed?
   end
 
   private
 
-  def rotate(params = {}) # метод вращения по кругу в массиве (angle negative - left / angle positive - right)
+  def rotate(params = {}) # rotating method inside compass array (angle negative - left / angle positive - right)
     @face = COMPASS.keys[(COMPASS.keys.index(@face) + params[:angle]) % COMPASS.keys.length]
   end
 end
